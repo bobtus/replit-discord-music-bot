@@ -505,9 +505,10 @@ bot.add_cog(Music(bot))
 @bot.event
 async def on_ready():
     print('Logged in as:\n{0.user.name}\n{0.user.id}'.format(bot))
-
+    
     await bot.change_presence(activity=discord.Activity(type = discord.ActivityType.listening, name='-play'))
 
 
-#keep_alive() 
+keep_alive()
+#bot.run(os.getenv("TOKEN"))
 bot.run(os.environ['TOKEN'])
