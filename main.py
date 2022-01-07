@@ -334,15 +334,19 @@ class Music(commands.Cog):
 
         await ctx.voice_state.stop()
         del self.voice_states[ctx.guild.id]
+        await ctx.message.add_reaction('👋')
 
     @commands.command(name='volume')
     async def _volume(self, ctx: commands.Context, *, volume: int):
-        """Sets the volume of the player."""
+        """Sets the volume of the player.
+        
+        Volume must be between 0 and 100
+        """
 
         if not ctx.voice_state.is_playing:
             return await ctx.send('Nothing being played at the moment.')
 
-        if 0 > volume > 100:
+        if 0 >= volume >= 100:
             return await ctx.send('Volume must be between 0 and 100')
 
         ctx.voice_state.current.source.volume = volume / 100
@@ -454,9 +458,11 @@ class Music(commands.Cog):
         ctx.voice_state.songs.remove(index - 1)
         await ctx.message.add_reaction('✅')
 
-    @commands.command(name='loop', aliases=['l'])
+    @commands.command(name='loop')
     async def _loop(self, ctx: commands.Context):
         """Loops the currently playing song.
+	
+	-loop to unloop
 
         Invoke this command again to unloop the song.
         """
@@ -470,10 +476,10 @@ class Music(commands.Cog):
 
     @commands.command(name='play', aliases=['p'])
     async def _play(self, ctx: commands.Context, *, search: str):
-        """-play https://youtu.be/dQw4w9WgXcQ
-		
-		Plays a song.
-
+        """Plays a song.
+	
+	-play https://youtu.be/dQw4w9WgXcQ
+	
         If there are songs in the queue, this will be queued until the
         other songs finished playing.
 
